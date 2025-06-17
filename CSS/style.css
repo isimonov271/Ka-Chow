@@ -1,3 +1,4 @@
+/* Общие стили для всех страниц */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -14,7 +15,6 @@ body {
     padding: 15px 30px;
     background-color: #ffffff;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    position: relative;
 }
 
 .logo {
@@ -30,6 +30,43 @@ body {
     text-align: center;
 }
 
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    margin-top: auto;
+}
+
+.help-btn {
+    padding: 12px 30px;
+    background-color: #34A853;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.help-btn:hover {
+    background-color: #2d8e47;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        padding: 15px;
+    }
+    
+    .logo {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+/* Стили для главной страницы */
 .main-content {
     display: flex;
     justify-content: center;
@@ -98,42 +135,70 @@ body {
     background-color: #3367D6;
 }
 
-.footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-}
-
-.help-btn {
-    padding: 12px 30px;
-    background-color: #34A853;
-    color: white;
+/* Стили для страницы платформ */
+.back-btn {
+    padding: 10px 15px;
+    background-color: #cbc9c9;
+    color: #333;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 5px;
+    font-size: 14px;
     cursor: pointer;
     text-decoration: none;
     transition: background-color 0.3s;
 }
 
-.help-btn:hover {
-    background-color: #2d8e47;
+.back-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.platforms-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.platform-btn {
+    padding: 20px 15px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+}
+
+.platform-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.platform-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.platform-code {
+    font-size: 16px;
+    color: #666;
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
-    .main-content {
-        flex-direction: column;
-        gap: 30px;
-    }
-    
-    .header {
-        flex-direction: column;
+    .platforms-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         padding: 15px;
-    }
-    
-    .logo {
-        margin-right: 0;
-        margin-bottom: 10px;
     }
 }
