@@ -2,9 +2,180 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Оборудование копакинг</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <style>
+        /* Общие стили для всех страниц */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .title {
+            font-size: 24px;
+            color: #333;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            margin-top: auto;
+        }
+
+        .help-btn {
+            padding: 12px 30px;
+            background-color: #34A853;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .help-btn:hover {
+            background-color: #2d8e47;
+        }
+
+        /* Стили для главной страницы */
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            gap: 50px;
+            padding: 40px 20px;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .image-container {
+            width: 250px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .image-button {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .image-button:hover {
+            transform: scale(1.05);
+        }
+
+        .menu-btn {
+            padding: 12px 30px;
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .menu-btn:hover {
+            background-color: #3367D6;
+        }
+
+        /* Адаптивные стили */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .image-container {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-item {
+                padding: 15px;
+                width: 80%;
+            }
+            
+            .image-container {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .menu-btn, .help-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .title {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="header">
@@ -24,7 +195,7 @@
             <div class="image-container">
                 <img src="images/оборудование.jfif" alt="Все оборудование" class="image-button" onclick="window.location.href='equipment.html'">
             </div>
-            <a href="" class="menu-btn">Все оборудование</a>
+            <a href="equipment.html" class="menu-btn">Все оборудование</a>
         </div>
     </div>
     
