@@ -29,33 +29,38 @@
 
     <!-- Скрипт подключения и инициализации -->
     <script type="text/javascript">
-        function initClient() {
-            gapi.client.init({
-                discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
-                clientId: '342661927883-rrg5vb5240i88o1mgnfrknuasuud9kdu.apps.googleusercontent.com',
-                scope: 'https://www.googleapis.com/auth/spreadsheets.readonly'
-            }).then(function () {
+        async function initClient() {
+            try {
+                await gapi.client.init({
+                    discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+                    clientId: '342661927883-rrg5vb5240i88o1mgnfrknuasuud9kdu.apps.googleusercontent.com',
+                    scope: 'https://www.googleapis.com/auth/spreadsheets.readonly'
+                });
                 loadSheet();
-            });
+            } catch (err) {
+                console.error('Ошибка инициализации:', err);
+            }
         };
 
-        function loadSheet() {
-            var spreadsheetId = '1xfDemOCc2rR7Caze4yZGNKqYpnhOVyrhwoPUVaBet4g'; // Ваш идентификатор таблицы
-            var range = 'A:I';
+        async function loadSheet() {
+            try {
+                const spreadsheetId = '1xfDemOCc2rR7Caze4yZGNKqYpnhOVyrhwoPUVaBet4g'; // Ваш идентификатор таблицы
+                const range = 'A:I';
 
-            gapi.client.sheets.spreadsheets.values.get({
-                spreadsheetId: spreadsheetId,
-                range: range
-            }).then(function(response) {
-                var rows = response.result.values;
+                const result = await gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: spreadsheetId,
+                    range: range
+                });
+
+                const rows = result.result.values;
                 if (!rows || !rows.length) {
                     console.log('Нет данных');
                 } else {
                     renderTable(rows);
                 }
-            }, function(response) {
-                console.error('Ошибка:', response.result.error.message);
-            });
+            } catch (err) {
+                console.error('Ошибка загрузки листов:', err);
+            }
         };
 
         function filterData() {
@@ -64,16 +69,16 @@
             rows.forEach(row => {
                 const statusCell = row.cells[row.cells.length - 1].innerText.trim(); // Статус находится в последней ячейке строки
                 if (selectedStatus === '' || statusCell === selectedStatus) {
-                    row.style.display = ''; // Показываем строки, соответствующие фильтру
+                    row.style.display = '';
                 } else {
-                    row.style.display = 'none'; // Скрываем остальные строки
+                    row.style.display = 'none';
                 }
             });
         };
 
-        window.onload = function() {
+        window.addEventListener("DOMContentLoaded", function() {
             gapi.load('client', initClient); // Загрузка библиотеки Google Client API
-        };
+        });
 
         function renderTable(data) {
             let tableHTML = '<thead><tr>';
