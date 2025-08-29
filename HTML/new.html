@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <title>Оборудование — фильтры, редактирование и сохранение</title>
+  <title>Фильтр оборудования</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
     table { border-collapse: collapse; width: 100%; margin-top: 10px; }
@@ -10,16 +10,13 @@
     th { background: #eee; cursor: pointer; }
     th.sorted-asc::after { content: " ▲"; }
     th.sorted-desc::after { content: " ▼"; }
-    td { cursor: pointer; }
-    td input { width: 100%; box-sizing: border-box; }
     input, select { margin-left: 10px; padding: 5px; }
-    button { margin-top: 10px; padding: 8px 12px; }
-    td.edited { background: #ffffcc; }
   </style>
+  <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-  <h2>Оборудование — фильтры, редактирование и сохранение</h2>
+  <h2>Оборудование — фильтры и сортировка</h2>
 
   <label for="statusFilter">Статус: </label>
   <select id="statusFilter">
@@ -33,42 +30,48 @@
     <option value="Все">Все</option>
   </select>
 
-  <label for="searchText" style="margin-left:20px;">Поиск: </label>
+  <label for="searchText" style="margin-left:20px;">Поиск по всем колонкам: </label>
   <input type="text" id="searchText" placeholder="Введите текст...">
 
-  <button id="saveBtn">💾 Сохранить изменения</button>
-
   <table id="equipTable">
-    <thead></thead>
+    <thead>
+      <tr>
+        <th data-col="0">Тип</th>
+        <th data-col="1">Описание</th>
+        <th data-col="2">Стоимость</th>
+        <th data-col="3">Кол-во</th>
+        <th data-col="4">В работе</th>
+        <th data-col="5">Занято по иным причинам</th>
+        <th data-col="6">Свободно</th>
+        <th data-col="7">Статус</th>
+      </tr>
+    </thead>
     <tbody></tbody>
   </table>
 
 <script>
-const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRR3bKUFvSQgLei3Zi4bzfuxZBw500l1-AEOnYc0s-Gka7Ca_IkKjMllqM9rzj6Q7ZR_ilxDVE2597n/pub?output=csv";
-const scriptURL = "https://script.google.com/macros/s/AKfycbzNAPgzWHb_D_RF9Zrjrd894yduIETtzQCyMemoZs-zzkMYBqqWFlETuDke3QCu3reqOg/exec";
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRR3bKUFvSQgLei3Zi4bzfuxZBw500l1-AEOnYc0s-Gka7Ca_IkKjMllqM9rzj6Q7ZR_ilxDVE2597n/pub?output=csv";
 
 let allData = [];
+// нужные колонки: A,B,D,E,F,G,H,I
+const neededCols = [0,1,3,4,5,6,7,8];
 let sortConfig = { col: null, dir: 1 };
-let changes = [];
 
-// Индексы колонок, которые показываем (игнорируем столбец A, индекс 0)
-const visibleCols = [...Array(10).keys()].filter(i => i!==0); // 0..9, кроме 0
-
-// загрузка CSV
-Papa.parse(csvURL, {
+Papa.parse(url, {
   download: true,
   header: false,
   complete: function(results) {
-    allData = results.data;
+    allData = results.data.slice(1);
     fillTypeFilter();
     renderTable("Все","Все","");
   }
 });
 
-// заполнение фильтра по типу
 function fillTypeFilter() {
   const typeSet = new Set();
-  allData.slice(1).forEach(row => { if(row[1]) typeSet.add(row[1].trim()); }); // B (индекс 1) как тип
+  allData.forEach(row => {
+    if (row[0]) typeSet.add(row[0].trim());
+  });
   const select = document.getElementById("typeFilter");
   typeSet.forEach(type => {
     const opt = document.createElement("option");
@@ -80,90 +83,74 @@ function fillTypeFilter() {
 
 function renderTable(statusFilter, typeFilter, searchText) {
   const tbody = document.querySelector("#equipTable tbody");
-  const thead = document.querySelector("#equipTable thead");
   tbody.innerHTML = "";
-  thead.innerHTML = "";
-
-  // заголовки
-  const trHead = document.createElement("tr");
-  visibleCols.forEach(idx => {
-    const th = document.createElement("th");
-    th.textContent = allData[0][idx];
-    th.addEventListener("click", () => {
-      if(sortConfig.col===idx){ sortConfig.dir*=-1; } else { sortConfig.col=idx; sortConfig.dir=1; }
-      applyFilters();
-    });
-    if(sortConfig.col===idx) th.classList.add(sortConfig.dir===1?"sorted-asc":"sorted-desc");
-    trHead.appendChild(th);
-  });
-  thead.appendChild(trHead);
-
-  // фильтр и поиск
   const search = searchText.toLowerCase();
-  const filtered = allData.slice(1).filter(row=>{
-    const status = row[8]?.trim(); // H/I? используем индекс 8 (столбец H) для статуса
-    const type = row[1]?.trim(); // B как тип
-    const rowText = visibleCols.map(i=>row[i]?row[i].toString().toLowerCase():"").join(" ");
-    const matchSearch = search==="" || rowText.includes(search);
-    return (statusFilter==="Все"||status===statusFilter)&&(typeFilter==="Все"||type===typeFilter)&&matchSearch;
+
+  let filtered = allData.filter(row => {
+    const status = row[7]?.trim();
+    const type   = row[0]?.trim();
+    const rowText = neededCols.map(idx => row[idx] ? row[idx].toString().toLowerCase() : "").join(" ");
+    const matchSearch = search === "" || rowText.includes(search);
+
+    return (statusFilter === "Все" || status === statusFilter) &&
+           (typeFilter === "Все" || type === typeFilter) &&
+           matchSearch;
   });
 
   // сортировка
-  if(sortConfig.col!==null){
-    filtered.sort((a,b)=>{
-      let valA=a[sortConfig.col]??"", valB=b[sortConfig.col]??"";let numA=parseFloat(valA.toString().replace(",",".")), numB=parseFloat(valB.toString().replace(",",".")); 
-      if(!isNaN(numA)&&!isNaN(numB)) return (numA-numB)*sortConfig.dir;
-      return valA.toString().localeCompare(valB.toString())*sortConfig.dir;
+  if (sortConfig.col !== null) {
+    filtered.sort((a,b) => {
+      let valA = a[neededCols[sortConfig.col]] ?? "";
+      let valB = b[neededCols[sortConfig.col]] ?? "";
+
+      let numA = parseFloat(valA.toString().replace(",","."));
+      let numB = parseFloat(valB.toString().replace(",","."));
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return (numA - numB) * sortConfig.dir;
+      }
+      return valA.toString().localeCompare(valB.toString()) * sortConfig.dir;
     });
   }
 
-  // строки
-  filtered.forEach((row,ridx)=>{
-    const tr=document.createElement("tr");
-    visibleCols.forEach(idx=>{
-      const td=document.createElement("td");
-      td.textContent=row[idx]??"";
-      td.addEventListener("click",()=>makeEditable(td,allData.indexOf(row),idx));
+  filtered.forEach(row => {
+    const tr = document.createElement("tr");
+    neededCols.forEach(idx => {
+      const td = document.createElement("td");
+      td.textContent = row[idx] ?? "";
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
   });
-}
 
-function makeEditable(td,row,col){
-  const oldVal = td.textContent;
-  td.innerHTML = <input type="text" value="${oldVal}">;
-  const input = td.querySelector("input");
-  input.focus();
-  input.addEventListener("blur", ()=>{
-    const newVal=input.value;
-    td.textContent=newVal;
-    td.classList.add("edited");
-    allData[row][col]=newVal;
-    const exist = changes.find(c=>c.row===row && c.col===col);
-    if(exist){ exist.value=newVal; } else { changes.push({row,col,value:newVal}); }
+  document.querySelectorAll("#equipTable th").forEach((th,i) => {
+    th.classList.remove("sorted-asc","sorted-desc");
+    if (i === sortConfig.col) {
+      th.classList.add(sortConfig.dir === 1 ? "sorted-asc" : "sorted-desc");
+    }
   });
 }
 
-function applyFilters(){
-  renderTable(document.getElementById("statusFilter").value,
-              document.getElementById("typeFilter").value,
-              document.getElementById("searchText").value);
+function applyFilters() {
+  renderTable(
+    document.getElementById("statusFilter").value,
+    document.getElementById("typeFilter").value,
+    document.getElementById("searchText").value
+  );
 }
 
-document.getElementById("statusFilter").addEventListener("change",applyFilters);
-document.getElementById("typeFilter").addEventListener("change",applyFilters);
-document.getElementById("searchText").addEventListener("input",applyFilters);
+document.getElementById("statusFilter").addEventListener("change", applyFilters);
+document.getElementById("typeFilter").addEventListener("change", applyFilters);
+document.getElementById("searchText").addEventListener("input", applyFilters);
 
-document.getElementById("saveBtn").addEventListener("click",()=>{
-  if(changes.length===0){ alert("Нет изменений для сохранения!"); return; }
-  fetch(scriptURL,{
-    method:"POST",
-    body:JSON.stringify(changes)
-  }).then(r=>r.text()).then(msg=>{
-    alert("Изменения сохранены!");
-    changes=[];
-    document.querySelectorAll("td.edited").forEach(td=>td.classList.remove("edited"));
+document.querySelectorAll("#equipTable th").forEach((th,i) => {
+  th.addEventListener("click", () => {
+    if (sortConfig.col === i) {
+      sortConfig.dir *= -1;
+    } else {
+      sortConfig.col = i;
+      sortConfig.dir = 1;
+    }
+    applyFilters();
   });
 });
 </script>
