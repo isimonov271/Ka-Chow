@@ -1,102 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Фильтрация оборудования</title>
-    <script src="https://apis.google.com/js/api.js"></script>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-    </style>
+  <meta charset="utf-8">
+  <title>Фильтр оборудования</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 6px; text-align: left; }
+    th { background: #eee; }
+  </style>
+  <!-- подключаем PapaParse -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-    <h1>Выбор оборудования</h1>
-    <label for="status">Выберите статус:</label>
-    <select id="statusFilter">
-        <option value="">Все</option>
-        <option value="Свободно">Свободно</option>
-        <option value="Занято">Занято</option>
-    </select>
-    <button onclick="filterData()">Показать</button>
-    <table id="equipmentTable"></table>
+  <h2>Оборудование — фильтр по статусу</h2>
+  <label for="statusFilter">Статус: </label>
+  <select id="statusFilter">
+    <option value="Все">Все</option>
+    <option value="Занято">Занято</option>
+    <option value="Свободно">Свободно</option>
+  </select>
 
-    <!-- Скрипт подключения и инициализации -->
-    <script type="text/javascript">
-        async function initClient() {
-            try {
-                await gapi.client.init({
-                    discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
-                    clientId: '342661927883-rrg5vb5240i88o1mgnfrknuasuud9kdu.apps.googleusercontent.com',
-                    scope: 'https://www.googleapis.com/auth/spreadsheets.readonly'
-                });
-                loadSheet();
-            } catch (err) {
-                console.error('Ошибка инициализации:', err);
-            }
-        };
+  <table id="equipTable">
+    <thead>
+      <tr>
+        <th>Тип</th><th>Описание</th><th>Стоимость</th><th>Кол-во</th>
+        <th>В работе</th><th>Занято по иным причинам</th>
+        <th>Свободно</th><th>Статус</th><th>Комментарий</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-        async function loadSheet() {
-            try {
-                const spreadsheetId = '1xfDemOCc2rR7Caze4yZGNKqYpnhOVyrhwoPUVaBet4g'; // Ваш идентификатор таблицы
-                const range = 'A:I';
+<script>
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQsJ4e0JCUNHSH6Ff2OVf6igWCTG1srsFOK3Y-3vcxCQ32sjd86k9z1Af7WGZLfK1aYQXmeMomUo6PK/pub?output=csv";
 
-                const result = await gapi.client.sheets.spreadsheets.values.get({
-                    spreadsheetId: spreadsheetId,
-                    range: range
-                });
+let allData = [];
 
-                const rows = result.result.values;
-                if (!rows || !rows.length) {
-                    console.log('Нет данных');
-                } else {
-                    renderTable(rows);
-                }
-            } catch (err) {
-                console.error('Ошибка загрузки листов:', err);
-            }
-        };
+// Загружаем CSV через PapaParse
+Papa.parse(url, {
+  download: true,
+  header: false,
+  complete: function(results) {
+    allData = results.data.slice(1); // пропускаем заголовок
+    renderTable("Все");
+  }
+});
 
-        function filterData() {
-            const selectedStatus = document.querySelector('#statusFilter').value;
-            const rows = [...document.querySelectorAll('#equipmentTable tbody tr')];
-            rows.forEach(row => {
-                const statusCell = row.cells[row.cells.length - 1].innerText.trim(); // Статус находится в последней ячейке строки
-                if (selectedStatus === '' || statusCell === selectedStatus) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        };
+function renderTable(filter) {
+  const tbody = document.querySelector("#equipTable tbody");
+  tbody.innerHTML = "";
 
-        window.addEventListener("DOMContentLoaded", function() {
-            gapi.load('client', initClient); // Загрузка библиотеки Google Client API
-        });
+  allData.forEach(row => {
+    const status = row[7]?.trim(); // колонка H (8-я колонка, индекс 7)
+    if (filter === "Все" || status === filter) {
+      const tr = document.createElement("tr");
+      row.forEach(cell => {
+        const td = document.createElement("td");
+        td.textContent = cell;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    }
+  });
+}
 
-        function renderTable(data) {
-            let tableHTML = '<thead><tr>';
-            data[0].forEach(header => {
-                tableHTML += `<th>${header}</th>`; // Первая строка - заголовки столбцов
-            });
-            tableHTML += '</tr></thead><tbody>';
-
-            for (let i = 1; i < data.length; i++) { // Пропускаем первую строку (заголовки)
-                tableHTML += '<tr>';
-                data[i].forEach(cell => {
-                    tableHTML += `<td>${cell}</td>`;
-                });
-                tableHTML += '</tr>';
-            }
-            tableHTML += '</tbody>';
-            document.querySelector('#equipmentTable').innerHTML = tableHTML;
-        };
-    </script>
+document.getElementById("statusFilter").addEventListener("change", e => {
+  renderTable(e.target.value);
+});
+</script>
 </body>
 </html>
