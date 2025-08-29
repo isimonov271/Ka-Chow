@@ -125,8 +125,6 @@ function renderTable(statusFilter, typeFilter, searchText) {
   document.querySelectorAll("#equipTable th").forEach((th,i) => {
     th.classList.remove("sorted-asc","sorted-desc");
     if (i === sortConfig.col) {
-      th.classList.add(sortConfig.
-                       if (i === sortConfig.col) {
       th.classList.add(sortConfig.dir === 1 ? "sorted-asc" : "sorted-desc");
     }
   });
@@ -144,11 +142,10 @@ document.getElementById("statusFilter").addEventListener("change", applyFilters)
 document.getElementById("typeFilter").addEventListener("change", applyFilters);
 document.getElementById("searchText").addEventListener("input", applyFilters);
 
-// обработка клика по заголовку
 document.querySelectorAll("#equipTable th").forEach((th,i) => {
   th.addEventListener("click", () => {
     if (sortConfig.col === i) {
-      sortConfig.dir *= -1; // меняем направление
+      sortConfig.dir *= -1;
     } else {
       sortConfig.col = i;
       sortConfig.dir = 1;
