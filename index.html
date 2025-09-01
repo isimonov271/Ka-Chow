@@ -45,23 +45,19 @@
             margin-top: auto;
         }
 
-        .help-btn {
-            padding: 12px 30px;
-            background-color: #34A853;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
+        /* Изображение вместо кнопки */
+        .help-image {
             cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s;
+            transition: transform 0.3s ease-in-out;
+            max-width: 50px; /* Размер изображения поддержки */
+            height: auto;
         }
 
-        .help-btn:hover {
-            background-color: #2d8e47;
+        .help-image:hover {
+            transform: scale(1.05); /* Увеличение при наведении */
         }
 
-        /* Стили для главной страницы */
+        /* Стили для меню */
         .main-content {
             display: flex;
             justify-content: center;
@@ -130,73 +126,12 @@
             background-color: #3367D6;
         }
 
-        /* Модальное окно */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            width: 300px;
-            text-align: center;
-        }
-
-        .modal-title {
-            margin-top: 0;
-            color: #333;
-        }
-
-        .password-input {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .submit-btn:hover {
-            background-color: #3367D6;
-        }
-
-        .error-message {
-            color: #d32f2f;
-            margin-top: 10px;
-            display: none;
-        }
-
-        /* Адаптивные стили */
+        /* Адаптивность */
         @media (max-width: 900px) {
             .main-content {
                 flex-direction: column;
                 gap: 30px;
             }
-            
             .image-container {
                 width: 200px;
                 height: 200px;
@@ -208,7 +143,6 @@
                 flex-direction: column;
                 padding: 15px;
             }
-            
             .logo {
                 margin-right: 0;
                 margin-bottom: 10px;
@@ -220,21 +154,17 @@
                 padding: 15px;
                 width: 80%;
             }
-            
             .image-container {
                 width: 180px;
                 height: 180px;
             }
-            
             .menu-btn, .help-btn {
                 padding: 10px 20px;
                 font-size: 14px;
             }
-            
             .title {
                 font-size: 20px;
             }
-            
             .modal-content {
                 width: 85%;
                 padding: 20px;
@@ -245,7 +175,7 @@
 <body>
     <div class="header">
         <img src="images/фм.jfif" alt="Логотип" class="logo">
-        <div class="title">Оборудование копакинг</div>
+        <div class="title">Инструменты копакинг</div>
     </div>
     
     <div class="main-content">
@@ -253,103 +183,20 @@
             <div class="image-container">
                 <img src="images/склад.png" alt="Платформы" class="image-button" id="platformsImage">
             </div>
-            <button class="menu-btn" id="platformsBtn">Список платформ</button>
+            <a href="calculator.html" class="menu-btn">Расчетник</a>
         </div>
         
         <div class="menu-item">
             <div class="image-container">
-                <img src="images/оборудование.jfif" alt="Все оборудование" class="image-button" onclick="window.location.href='equipment.html'">
+                <img src="images/оборудование.jfif" alt="Оборудование" class="image-button" onclick="window.location.href='equipment.html'">
             </div>
-            <a href="equipment.html" class="menu-btn">Все оборудование</a>
+            <a href="equipment.html" class="menu-btn">Оборудование</a>
         </div>
     </div>
     
     <div class="footer">
-        <a href="https://mail.google.com/mail/?view=cm&to=isimonov@fmlogistic.com&su=Вопрос по сайту" 
-           class="help-btn" 
-           target="_blank">
-            Помощь
-        </a>
+        <!-- Новое изображение поддержки -->
+        <img src="images/поддержка.png" alt="Поддержка" class="help-image" onclick="window.open('https://mail.google.com/mail/?view=cm&to=isimonov@fmlogistic.com&su=Вопрос%20по%20сайту');">
     </div>
-
-    <!-- Модальное окно для ввода пароля -->
-    <div id="passwordModal" class="modal">
-        <div class="modal-content">
-            <h2 class="modal-title">Введите пароль</h2>
-            <input type="password" id="passwordInput" class="password-input" placeholder="Введите пароль">
-            <button id="submitPassword" class="submit-btn">Продолжить</button>
-            <p id="errorMessage" class="error-message">Неверный пароль. Попробуйте снова.</p>
-        </div>
-    </div>
-
-    <script>
-        // Получаем элементы DOM
-        const platformsBtn = document.getElementById('platformsBtn');
-        const platformsImage = document.getElementById('platformsImage');
-        const modal = document.getElementById('passwordModal');
-        const passwordInput = document.getElementById('passwordInput');
-        const submitBtn = document.getElementById('submitPassword');
-        const errorMessage = document.getElementById('errorMessage');
-
-        // Пароли и соответствующие страницы (15 вариантов)
-        const passwordPages = {
-            'KUZ': 'new.html',
-            'STP': 'test.php',
-            'TKV': 'TKV.html',
-            'HMK': 'HMK.html',
-            'ETG': 'ETG.html',
-            'DMT': 'DMT.html',
-            'KLI': 'KLI.html',
-            'DMD': 'DMD.html',
-            'TLB': 'TLB.html',
-            'NOV': 'NOV.html',
-            'RST': 'RST.html',
-            'EKA': 'EKA.html',
-            'SPB': 'SPB.html',
-            'VLA': 'VLA.html',
-            'SMR': 'SMR.html'
-        };
-
-        // Открываем модальное окно при нажатии на кнопку или изображение
-        platformsBtn.addEventListener('click', showModal);
-        platformsImage.addEventListener('click', showModal);
-
-        function showModal() {
-            modal.style.display = 'flex';
-            passwordInput.focus();
-        }
-
-        // Обработчик отправки пароля
-        submitBtn.addEventListener('click', checkPassword);
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-
-        function checkPassword() {
-            const password = passwordInput.value.trim();
-            
-            if (passwordPages.hasOwnProperty(password)) {
-                // Перенаправляем на соответствующую страницу
-                window.location.href = 'HTML/' + passwordPages[password];
-            } else {
-                // Показываем сообщение об ошибке
-                errorMessage.style.display = 'block';
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        }
-
-        // Закрытие модального окна при клике вне его
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-                errorMessage.style.display = 'none';
-                passwordInput.value = '';
-            }
-        });
-    </script>
 </body>
 </html>
-
