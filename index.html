@@ -32,7 +32,7 @@
 
         .footer {
             text-align: center;
-            padding: 20px;
+            padding: 5px;
             background-color: #ffffff;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             margin-top: auto;
@@ -47,7 +47,7 @@
         }
 
         .help-image:hover {
-            transform: scale(1.05);
+            transform: scale(1.1); /* Убираем эффект масштабирования */
         }
 
         /* Стили для меню */
@@ -65,8 +65,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            background-color: #ffffff;
-            padding: 25px;
+            padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s;
@@ -83,9 +82,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
             overflow: hidden;
         }
 
@@ -99,24 +97,19 @@
         }
 
         .image-button:hover {
-            transform: scale(1.05);
+            transform: scale(1); /* Убираем эффект масштабирования */
         }
 
         .menu-btn {
-            padding: 12px 30px;
-            background-color: #4285F4;
-            color: white;
+            background-color: transparent;
+            color: #226e93;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            text-decoration: none;
+            font-size: 25px; /* Увеличение размера текста */
+            font-weight: bold; /* Жирный шрифт */
+            cursor: default; /* Меняем стрелочку обратно на обычную */
             transition: background-color 0.3s;
-            margin-top: 10px;
-        }
-
-        .menu-btn:hover {
-            background-color: #3367D6;
+            margin-top: 5px; /* Уменьшаем отступ сверху */
         }
 
         /* Адаптивность */
@@ -167,29 +160,33 @@
 </head>
 <body>
     <div class="header">
-        <img src="images/фмлог.png" alt="Логотип" class="logo">
+        <img src="C:\Users\isimonov\Desktop\сайт\фмлог.png" alt="Логотип" class="logo">
     </div>
     
     <div class="main-content">
         <!-- Кнопка Расчетника -->
-        <a href="QF.html" class="menu-item">
-            <div class="image-container">
-                <img src="images/расчетник.jpg" alt="Расчетник" class="image-button">
-            </div>
+        <div class="menu-item">
+            <a href="QF.html">
+                <div class="image-container">
+                    <img src="C:\Users\isimonov\Desktop\сайт\расчетник.png" alt="Расчетник" class="image-button">
+                </div>
+            </a>
             <span class="menu-btn">Расчетник</span>
-        </a>
+        </div>
         
         <!-- Кнопка Оборудования -->
-        <a href="equipment.html" class="menu-item">
-            <div class="image-container">
-                <img src="images/оборудование.jfif" alt="Оборудование" class="image-button">
-            </div>
+        <div class="menu-item">
+            <a href="equipment.html">
+                <div class="image-container">
+                    <img src="C:\Users\isimonov\Desktop\сайт\оборудование.png" alt="Оборудование" class="image-button">
+                </div>
+            </a>
             <span class="menu-btn">Оборудование</span>
-        </a>
+        </div>
     </div>
     
     <div class="footer">
-        <img src="images/поддержка.png" alt="Поддержка" class="help-image" onclick="window.open('https://mail.google.com/mail/?view=cm&to=isimonov@fmlogistic.com&su=Вопрос%20по%20сайту');">
+        <img src="C:\Users\isimonov\Desktop\сайт\поддержка.png" alt="Поддержка" class="help-image" onclick="window.open('https://mail.google.com/mail/?view=cm&to=isimonov@fmlogistic.com&su=Вопрос%20по%20сайту');">
     </div>
 </body>
 </html>
