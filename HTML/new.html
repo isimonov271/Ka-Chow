@@ -19,7 +19,7 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-  <h2>Оборудование НМК</h2>
+  <h2>Оборудование НМК ТС</h2>
 
   <button onclick="window.location.href='index.html'" class="back-home-btn">На главную</button>
 
@@ -43,14 +43,15 @@
   <table id="equipTable">
     <thead>
       <tr>
-        <th data-col="0">Тип</th>
-        <th data-col="1">Описание</th>
-        <th data-col="2">Стоимость</th>
-        <th data-col="3">Кол-во</th>
-        <th data-col="4">В работе</th>
-        <th data-col="5">Занято по иным причинам</th>
-        <th data-col="6">Свободно</th>
-        <th data-col="7">Статус</th>
+        <th data-col="1">Тип</th>
+        <th data-col="2">Описание</th>
+        <th data-col="3">Стоимость</th>
+        <th data-col="4">Кол-во</th>
+        <th data-col="5">В работе</th>
+        <th data-col="6">Занято иначе</th>
+        <th data-col="7">Свободно</th>
+        <th data-col="8">Статус</th>
+        <th data-col="8">Комментарий</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -61,7 +62,7 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRR3bKUFvSQgLei3Zi4
 
 let allData = [];
 // нужные колонки: A,B,D,E,F,G,H,I
-const neededCols = [0,1,3,4,5,6,7,8];
+const neededCols = [1,2,3,4,5,6,7,8,9];
 let sortConfig = { col: null, dir: 1 };
 
 Papa.parse(url, {
