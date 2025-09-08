@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
@@ -44,8 +44,7 @@
         <th data-col="5">В работе</th>
         <th data-col="6">Занято иначе</th>
         <th data-col="7">Свободно</th>
-        <th data-col="8">Статус</th>
-        <th data-col="9">Комментарий</th>
+        <th data-col="8">Комментарий</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -55,8 +54,8 @@
 const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRR3bKUFvSQgLei3Zi4bzfuxZBw500l1-AEOnYc0s-Gka7Ca_IkKjMllqM9rzj6Q7ZR_ilxDVE2597n/pub?output=csv";
 
 let allData = [];
-// Нужные колонки: B,C,D,E,F,G,H,I,J
-const neededCols = [1,2,3,4,5,6,7,8,9]; // Колонки с первого листа Google Sheets
+// Нужные колонки: B,C,D,E,F,G,H,J
+const neededCols = [1,2,3,4,5,6,7,8]; // Новые колонки после удаления статуса
 let sortConfig = { col: null, dir: 1 }; // Настройки сортировки
 
 Papa.parse(url, {
@@ -120,7 +119,7 @@ function renderTable(typeFilter, searchText) {
           }
           break;
         
-        case '9': // Комментарий
+        case '8': // Комментарий
           // Сортировка комментариев по длине текста
           return ((valA.length - valB.length) * sortConfig.dir);
           
