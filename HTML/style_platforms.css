@@ -20,7 +20,7 @@ thead {
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: #fff;
+  background-color: #ddd; /* Сделали фон серым только для заголовков */
   box-shadow: 0 2px 2px rgba(0,0,0,.1);
 }
 
@@ -30,7 +30,7 @@ th, td {
   vertical-align: middle;
   text-align: center;
   cursor: default;
-  background: #eee;
+  background: #fff; /* Фон основной части таблицы стал белым */
 }
 
 input, select {
