@@ -5,18 +5,23 @@
   <title>Фильтр оборудования</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
+    h2 { color: #226e93; text-align: center; }
     table { border-collapse: collapse; width: 100%; margin-top: 10px; }
-    th, td { border: 1px solid #ccc; padding: 6px; text-align: left; cursor: default; }
+    th, td { border: 1px solid #ccc; padding: 6px; vertical-align: middle; text-align: center; cursor: default; }
     th { background: #eee; cursor: pointer; }
     th.sorted-asc::after { content: " ▲"; }
     th.sorted-desc::after { content: " ▼"; }
     input, select { margin-left: 10px; padding: 5px; }
+    button { margin-left: 10px; padding: 5px; }
+    .back-home-btn { margin-right: 10px; }
   </style>
   <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-  <h2>Оборудование — фильтры и сортировка</h2>
+  <h2>Оборудование НМК</h2>
+
+  <button onclick="window.location.href='index.html'" class="back-home-btn">На главную</button>
 
   <label for="statusFilter">Статус: </label>
   <select id="statusFilter">
@@ -32,6 +37,8 @@
 
   <label for="searchText" style="margin-left:20px;">Поиск по всем колонкам: </label>
   <input type="text" id="searchText" placeholder="Введите текст...">
+
+  <button onclick="resetFiltersAndSorting()">Сбросить фильтрацию и сортировку</button>
 
   <table id="equipTable">
     <thead>
@@ -128,6 +135,14 @@ function renderTable(statusFilter, typeFilter, searchText) {
       th.classList.add(sortConfig.dir === 1 ? "sorted-asc" : "sorted-desc");
     }
   });
+}
+
+function resetFiltersAndSorting() {
+  document.getElementById("statusFilter").value = "Все";
+  document.getElementById("typeFilter").value = "Все";
+  document.getElementById("searchText").value = "";
+  sortConfig = { col: null, dir: 1 };
+  renderTable("Все","Все","");
 }
 
 function applyFilters() {
