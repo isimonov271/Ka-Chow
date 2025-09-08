@@ -25,7 +25,7 @@ thead {
 }
 
 thead tr th {
-  background-color: #ddd; /* Серый фон только для заголовков таблицы */
+  background-color: #fff; /* Серый фон только для заголовков таблицы */
 }
 
 tbody tr td {
