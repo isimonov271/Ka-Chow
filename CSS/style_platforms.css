@@ -1,4 +1,5 @@
-/* Файл стилей styles.css */
+/* Файл стилей style_platforms.css */
+
 body {
   font-family: Arial, sans-serif;
   padding: 20px;
@@ -20,7 +21,7 @@ thead {
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: #ddd; /* Сделали фон серым только для заголовков */
+  background-color: #ddd; /* Серый фон только для заголовков таблицы */
   box-shadow: 0 2px 2px rgba(0,0,0,.1);
 }
 
@@ -30,7 +31,7 @@ th, td {
   vertical-align: middle;
   text-align: center;
   cursor: default;
-  background: #fff; /* Фон основной части таблицы стал белым */
+  background: #fff; /* Белый фон для ячеек таблицы */
 }
 
 input, select {
