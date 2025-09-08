@@ -17,25 +17,26 @@ body {
     justify-content: center; /* Горизонтальное выравнивание */
     padding: 15px 30px;
     background-color: transparent; /* Прозрачный фон */
+    width: 100%; /* Гарантированно занимаем всю ширину окна */
 }
 
-a.logo-link { /* Новая ссылка для логотипа */
-    display: inline-block; /* Блок с возможностями встраивания */
+a.logo-link {
+    display: block; /* Используется блочное отображение */
+    margin: 0 auto; /* Центрирование по горизонтали */
     width: 13%; /* Ширина равна ширине самого логотипа */
     height: auto;
-    margin: 0 auto; /* Центрирование по горизонтали */
 }
 
 .logo {
-    width: 100px; /* Задали фиксированную ширину */
-    height: auto; /* Автоматически вычисляется пропорциональная высота */
-    object-fit: cover; /* Масштабируем картинку, сохраняя её пропорции */
+    width: 100px; /* Зафиксировали ширину логотипа */
+    height: auto; /* Поддерживаем соотношение сторон */
+    object-fit: cover; /* Масштабируем изображение */
     transition: transform 0.3s ease-in-out; /* Эффекты анимации */
 }
 
 /* Дополнительные эффекты при наведении */
 .logo:hover {
-    transform: scale(1.1); /* Легкое увеличение при наведении */
+    transform: scale(1.1); /* Небольшое увеличение при наведении */
 }
 
 .footer {
@@ -46,7 +47,7 @@ a.logo-link { /* Новая ссылка для логотипа */
 }
 
 .small-text {
-    font-size: 6px; /* Размер шрифта поменьше */
+    font-size: 6px; /* Маленький шрифт */
     color: #666; /* Серый оттенок текста */
 }
 
@@ -64,9 +65,9 @@ a.logo-link { /* Новая ссылка для логотипа */
 .main-content {
     display: flex;
     justify-content: center; /* Расположение элементов по центру */
-    align-items: stretch; /* Все кнопки имеют одинаковую высоту */
-    flex-wrap: wrap; /* Возможность переноса строки на мобильных устройствах */
-    gap: 20px; /* Расстояние между кнопками */
+    align-items: stretch; /* Одинаковая высота элементов */
+    flex-wrap: wrap; /* Возможность переноса строки на маленьких экранах */
+    gap: 20px; /* Пространство между элементами */
     padding: 40px 20px;
 }
 
@@ -80,7 +81,7 @@ a.logo-link { /* Новая ссылка для логотипа */
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     transition: transform 0.3s;
     background-color: #ebebeb; /* Цвет фона */
-    height: fit-content; /* Высота зависит от контента */
+    height: fit-content; /* Высота определяется контентом */
 }
 
 .menu-item:hover {
@@ -117,11 +118,11 @@ a.logo-link { /* Новая ссылка для логотипа */
     color: #226e93;
     border: none;
     border-radius: 8px;
-    font-size: 25px; /* Увеличенный размер шрифта */
+    font-size: 25px; /* Большой шрифт */
     font-weight: bold; /* Жирный шрифт */
-    cursor: default; /* Стандартный курсор */
+    cursor: default; /* Обычный курсор */
     transition: background-color 0.3s;
-    margin-top: 5px; /* Отступ сверху уменьшен */
+    margin-top: 5px; /* Верхний отступ */
 }
 
 .platform-name,
@@ -134,7 +135,7 @@ a.logo-link { /* Новая ссылка для логотипа */
 
 @media (max-width: 900px) {
     .main-content {
-        flex-direction: column; /* На узких экранах переключаемся обратно на столбец */
+        flex-direction: column; /* На небольших экранах располагаем вертикально */
         gap: 30px;
     }
     .image-container {
