@@ -1,0 +1,161 @@
+/* Файл общих стилей common_styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; /* Белый фон */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    align-items: center; /* Вертикальное выравнивание */
+    justify-content: center; /* Горизонтальное выравнивание */
+    padding: 15px 30px;
+    background-color: transparent; /* Прозрачный фон */
+}
+
+.logo {
+    width: 13%; /* Настройка размера логотипа */
+    height: auto;
+}
+
+.footer {
+    text-align: center;
+    padding: 5px;
+    background-color: transparent; /* Прозрачный фон */
+    margin-top: auto;
+}
+
+.small-text {
+    font-size: 6px; /* Размер шрифта поменьше */
+    color: #666; /* Серый оттенок текста */
+}
+
+.help-image {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    max-width: 50px;
+    height: auto;
+}
+
+.help-image:hover {
+    transform: scale(1.1); /* Эффект увеличения при наведении */
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: 50px;
+    padding: 40px 20px;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    background-color: #ebebeb; /* Новый цвет кнопок */
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.image-container {
+    width: 250px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.image-button {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.image-button:hover {
+    transform: scale(1); /* Без эффекта масштабирования */
+}
+
+.menu-btn {
+    background-color: transparent;
+    color: #226e93;
+    border: none;
+    border-radius: 8px;
+    font-size: 25px; /* Увеличенный размер шрифта */
+    font-weight: bold; /* Жирный шрифт */
+    cursor: default; /* Курсор остаётся стандартным */
+    transition: background-color 0.3s;
+    margin-top: 5px; /* Отступ сверху уменьшен */
+}
+
+.platform-name,
+.platform-code {
+    font-size: 14px;
+    line-height: 1.2em;
+    text-align: center;
+    color: #226e93;
+}
+
+@media (max-width: 900px) {
+    .main-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .image-container {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        padding: 15px;
+    }
+    .logo {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-item {
+        padding: 15px;
+        width: 80%;
+    }
+    .image-container {
+        width: 180px;
+        height: 180px;
+    }
+    .menu-btn, .help-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    .title {
+        font-size: 20px;
+    }
+    .modal-content {
+        width: 85%;
+        padding: 20px;
+    }
+}
