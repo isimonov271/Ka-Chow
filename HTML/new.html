@@ -23,13 +23,6 @@
 
   <button onclick="window.location.href='index.html'" class="back-home-btn">На главную</button>
 
-  <label for="statusFilter">Статус: </label>
-  <select id="statusFilter">
-    <option value="Все">Все</option>
-    <option value="Занято">Занято</option>
-    <option value="Свободно">Свободно</option>
-  </select>
-
   <label for="typeFilter" style="margin-left:20px;">Тип оборудования: </label>
   <select id="typeFilter">
     <option value="Все">Все</option>
@@ -50,7 +43,6 @@
         <th data-col="5">В работе</th>
         <th data-col="6">Занято иначе</th>
         <th data-col="7">Свободно</th>
-        <th data-col="8">Статус</th>
         <th data-col="9">Комментарий</th>
       </tr>
     </thead>
@@ -61,8 +53,8 @@
 const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRR3bKUFvSQgLei3Zi4bzfuxZBw500l1-AEOnYc0s-Gka7Ca_IkKjMllqM9rzj6Q7ZR_ilxDVE2597n/pub?output=csv";
 
 let allData = [];
-// Нужные колонки: B,C,D,E,F,G,H,I,J
-const neededCols = [1,2,3,4,5,6,7,8,9]; // Колонки с первого листа Google Sheets
+// Нужные колонки: B,C,D,E,F,G,H,J
+const neededCols = [1,2,3,4,5,6,7,9]; // Колонки с первого листа Google Sheets
 let sortConfig = { col: null, dir: 1 }; // Настройки сортировки
 
 Papa.parse(url, {
@@ -71,7 +63,7 @@ Papa.parse(url, {
   complete: function(results) {
     allData = results.data.slice(1); // Пропускаем первую строку с заголовком
     fillTypeFilter(); // Заполняем выпадающее меню типов оборудования
-    renderTable("Все","Все",""); // Первоначальная загрузка данных
+    renderTable("Все",""); // Первоначальная загрузка данных
   }
 });
 
@@ -79,7 +71,7 @@ Papa.parse(url, {
 function fillTypeFilter() {
   const typeSet = new Set();
   allData.forEach(row => {
-    if (row[1]) typeSet.add(row[1].trim()); // Тип оборудования находится в первой колонке (индекс 1)
+    if (row[1]) typeSet.add(row[1].trim()); // Тип оборудования находится в второй колонке (индекс 1)
   });
   const select = document.getElementById("typeFilter");
   typeSet.forEach(type => {
@@ -91,19 +83,17 @@ function fillTypeFilter() {
 }
 
 // Рендеринг таблицы
-function renderTable(statusFilter, typeFilter, searchText) {
+function renderTable(typeFilter, searchText) {
   const tbody = document.querySelector("#equipTable tbody");
   tbody.innerHTML = "";
   const search = searchText.toLowerCase();
 
   let filtered = allData.filter(row => {
-    const status = row[8]?.trim(); // Статус находится в 9-й колонке (индекс 8)
     const type   = row[1]?.trim(); // Тип оборудования находится в 2-й колонке (индекс 1)
     const rowText = neededCols.map(idx => row[idx] ? row[idx].toString().toLowerCase() : "").join(" "); // Поиск по нужным колонкам
     const matchSearch = search === "" || rowText.includes(search);
     
-    return (statusFilter === "Все" || status === statusFilter) &&
-           (typeFilter === "Все" || type === typeFilter) &&
+    return (typeFilter === "Все" || type === typeFilter) &&
            matchSearch;
   });
 
@@ -146,24 +136,21 @@ function renderTable(statusFilter, typeFilter, searchText) {
 
 // Функция сброса фильтров и сортировки
 function resetFiltersAndSorting() {
-  document.getElementById("statusFilter").value = "Все";
   document.getElementById("typeFilter").value = "Все";
   document.getElementById("searchText").value = "";
   sortConfig = { col: null, dir: 1 };
-  renderTable("Все","Все","");
+  renderTable("Все","");
 }
 
 // Применение фильтров
 function applyFilters() {
   renderTable(
-    document.getElementById("statusFilter").value,
     document.getElementById("typeFilter").value,
     document.getElementById("searchText").value
   );
 }
 
 // Подписываем события на изменение фильтров
-document.getElementById("statusFilter").addEventListener("change", applyFilters);
 document.getElementById("typeFilter").addEventListener("change", applyFilters);
 document.getElementById("searchText").addEventListener("input", applyFilters);
 
