@@ -38,7 +38,7 @@
   <label for="searchText" style="margin-left:20px;">Поиск по всем колонкам: </label>
   <input type="text" id="searchText" placeholder="Введите текст...">
 
-  <button onclick="resetFiltersAndSorting()">Сбросить фильтр и сортировку</button>
+  <button onclick="resetFiltersAndSorting()">Сбросить фильтр</button>
 
   <table id="equipTable">
     <thead>
@@ -51,7 +51,7 @@
         <th data-col="6">Занято иначе</th>
         <th data-col="7">Свободно</th>
         <th data-col="8">Статус</th>
-        <th data-col="8">Комментарий</th>
+        <th data-col="9">Комментарий</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -61,24 +61,25 @@
 const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRR3bKUFvSQgLei3Zi4bzfuxZBw500l1-AEOnYc0s-Gka7Ca_IkKjMllqM9rzj6Q7ZR_ilxDVE2597n/pub?output=csv";
 
 let allData = [];
-// нужные колонки: A,B,D,E,F,G,H,I
-const neededCols = [1,2,3,4,5,6,7,8,9];
-let sortConfig = { col: null, dir: 1 };
+// Нужные колонки: B,C,D,E,F,G,H,I,J
+const neededCols = [1,2,3,4,5,6,7,8,9]; // Колонки с первого листа Google Sheets
+let sortConfig = { col: null, dir: 1 }; // Настройки сортировки
 
 Papa.parse(url, {
   download: true,
   header: false,
   complete: function(results) {
-    allData = results.data.slice(1);
-    fillTypeFilter();
-    renderTable("Все","Все","");
+    allData = results.data.slice(1); // Пропускаем первую строку с заголовком
+    fillTypeFilter(); // Заполняем выпадающее меню типов оборудования
+    renderTable("Все","Все",""); // Первоначальная загрузка данных
   }
 });
 
+// Заполнение списка типов оборудования
 function fillTypeFilter() {
   const typeSet = new Set();
   allData.forEach(row => {
-    if (row[0]) typeSet.add(row[0].trim());
+    if (row[1]) typeSet.add(row[1].trim()); // Тип оборудования находится в первой колонке (индекс 1)
   });
   const select = document.getElementById("typeFilter");
   typeSet.forEach(type => {
@@ -89,37 +90,41 @@ function fillTypeFilter() {
   });
 }
 
+// Рендеринг таблицы
 function renderTable(statusFilter, typeFilter, searchText) {
   const tbody = document.querySelector("#equipTable tbody");
   tbody.innerHTML = "";
   const search = searchText.toLowerCase();
 
   let filtered = allData.filter(row => {
-    const status = row[7]?.trim();
-    const type   = row[0]?.trim();
-    const rowText = neededCols.map(idx => row[idx] ? row[idx].toString().toLowerCase() : "").join(" ");
+    const status = row[8]?.trim(); // Статус находится в 9-й колонке (индекс 8)
+    const type   = row[1]?.trim(); // Тип оборудования находится в 2-й колонке (индекс 1)
+    const rowText = neededCols.map(idx => row[idx] ? row[idx].toString().toLowerCase() : "").join(" "); // Поиск по нужным колонкам
     const matchSearch = search === "" || rowText.includes(search);
-
+    
     return (statusFilter === "Все" || status === statusFilter) &&
            (typeFilter === "Все" || type === typeFilter) &&
            matchSearch;
   });
 
-  // сортировка
+  // Сортируем таблицу
   if (sortConfig.col !== null) {
     filtered.sort((a,b) => {
       let valA = a[neededCols[sortConfig.col]] ?? "";
       let valB = b[neededCols[sortConfig.col]] ?? "";
-
-      let numA = parseFloat(valA.toString().replace(",","."));
-      let numB = parseFloat(valB.toString().replace(",","."));
+      
+      // Если данные являются числами, сортируем численно
+      let numA = parseFloat(valA.replace(",", "."));
+      let numB = parseFloat(valB.replace(",", "."));
       if (!isNaN(numA) && !isNaN(numB)) {
         return (numA - numB) * sortConfig.dir;
       }
-      return valA.toString().localeCompare(valB.toString()) * sortConfig.dir;
+      // Иначе сортируем лексикографически
+      return valA.localeCompare(valB) * sortConfig.dir;
     });
   }
 
+  // Отображаем данные
   filtered.forEach(row => {
     const tr = document.createElement("tr");
     neededCols.forEach(idx => {
@@ -130,6 +135,7 @@ function renderTable(statusFilter, typeFilter, searchText) {
     tbody.appendChild(tr);
   });
 
+  // Обновляем иконки сортировки
   document.querySelectorAll("#equipTable th").forEach((th,i) => {
     th.classList.remove("sorted-asc","sorted-desc");
     if (i === sortConfig.col) {
@@ -138,6 +144,7 @@ function renderTable(statusFilter, typeFilter, searchText) {
   });
 }
 
+// Функция сброса фильтров и сортировки
 function resetFiltersAndSorting() {
   document.getElementById("statusFilter").value = "Все";
   document.getElementById("typeFilter").value = "Все";
@@ -146,6 +153,7 @@ function resetFiltersAndSorting() {
   renderTable("Все","Все","");
 }
 
+// Применение фильтров
 function applyFilters() {
   renderTable(
     document.getElementById("statusFilter").value,
@@ -154,19 +162,21 @@ function applyFilters() {
   );
 }
 
+// Подписываем события на изменение фильтров
 document.getElementById("statusFilter").addEventListener("change", applyFilters);
 document.getElementById("typeFilter").addEventListener("change", applyFilters);
 document.getElementById("searchText").addEventListener("input", applyFilters);
 
+// Добавляем событие сортировки по клику на заголовки колонок
 document.querySelectorAll("#equipTable th").forEach((th,i) => {
   th.addEventListener("click", () => {
     if (sortConfig.col === i) {
-      sortConfig.dir *= -1;
+      sortConfig.dir *= -1; // Меняем направление сортировки
     } else {
-      sortConfig.col = i;
-      sortConfig.dir = 1;
+      sortConfig.col = i; // Устанавливаем новую колонку для сортировки
+      sortConfig.dir = 1; // Начинаем с восходящей сортировки
     }
-    applyFilters();
+    applyFilters(); // Перезагружаем таблицу с новыми настройками
   });
 });
 </script>
