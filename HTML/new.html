@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <title>Фильтр оборудования</title>
+  <title>Оборудование НМК</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
     h2 { color: #226e93; text-align: center; }
@@ -20,9 +20,9 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-  <h2>Оборудование НМК ТС</h2>
+  <h2>Оборудование НМК</h2>
 
-  <button onclick="window.location.href='index.html'" class="back-home-btn">На главную</button>
+  <button onclick="window.location.href='https://isimonov271.github.io/equipment/'" class="back-home-btn">На главную</button>
 
   <label for="typeFilter" style="margin-left:20px;">Тип оборудования: </label>
   <select id="typeFilter">
@@ -55,7 +55,7 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRR3bKUFvSQgLei3Zi4
 
 let allData = [];
 // Нужные колонки: B,C,D,E,F,G,H,J
-const neededCols = [1,2,3,4,5,6,7,8]; // Новые колонки после удаления статуса
+const neededCols = [1,2,3,4,5,6,7,8]; // После удаления статуса
 let sortConfig = { col: null, dir: 1 }; // Настройки сортировки
 
 Papa.parse(url, {
@@ -105,27 +105,18 @@ function renderTable(typeFilter, searchText) {
       let valA = a[idx] ?? "";
       let valB = b[idx] ?? "";
 
-      switch (idx) {
-        case '3': // Стоимость
-        case '4': // Количество
-        case '5': // В работе
-        case '6': // Занято иначе
-        case '7': // Свободно
-          // Числовые данные сортируются по значению числа
-          let numA = parseFloat(valA.replace(",", "."));
-          let numB = parseFloat(valB.replace(",", "."));
-          if (!isNaN(numA) && !isNaN(numB)) {
-            return (numA - numB) * sortConfig.dir;
-          }
-          break;
-        
-        case '8': // Комментарий
-          // Сортировка комментариев по длине текста
-          return ((valA.length - valB.length) * sortConfig.dir);
-          
-        default:
-          // Остальные столбцы сортируются алфавитно
-          return valA.localeCompare(valB) * sortConfig.dir;
+      // Проверяем, является ли значение числом
+      let isNumA = /^[-+]?(\d*\.)?\d+$/.test(valA);
+      let isNumB = /^[-+]?(\d*\.)?\d+$/.test(valB);
+
+      if (isNumA && isNumB) {
+        // Преобразуем значения в числа
+        let numA = parseFloat(valA.replace(",", ".") || 0);
+        let numB = parseFloat(valB.replace(",", ".") || 0);
+        return (numA - numB) * sortConfig.dir;
+      } else {
+        // Осталось обычное алфавитное сравнение
+        return valA.localeCompare(valB) * sortConfig.dir;
       }
     });
   }
