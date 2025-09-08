@@ -1,0 +1,48 @@
+/* Файл стилей styles.css */
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h2 {
+  color: #226e93;
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+  position: relative;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #fff;
+  box-shadow: 0 2px 2px rgba(0,0,0,.1);
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  vertical-align: middle;
+  text-align: center;
+  cursor: default;
+  background: #eee;
+}
+
+input, select {
+  margin-left: 10px;
+  padding: 5px;
+}
+
+button {
+  margin-left: 10px;
+  padding: 5px;
+}
+
+.back-home-btn {
+  margin-right: 10px;
+}
