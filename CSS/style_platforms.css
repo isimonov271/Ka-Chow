@@ -21,8 +21,15 @@ thead {
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: #ddd; /* Серый фон только для заголовков таблицы */
   box-shadow: 0 2px 2px rgba(0,0,0,.1);
+}
+
+thead tr th {
+  background-color: #ddd; /* Серый фон только для заголовков таблицы */
+}
+
+tbody tr td {
+  background-color: #fff; /* Белый фон для ячеек таблицы */
 }
 
 th, td {
@@ -31,7 +38,6 @@ th, td {
   vertical-align: middle;
   text-align: center;
   cursor: default;
-  background: #fff; /* Белый фон для ячеек таблицы */
 }
 
 input, select {
