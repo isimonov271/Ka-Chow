@@ -9,14 +9,11 @@
     table { border-collapse: collapse; width: 100%; margin-top: 10px; position: relative; }
     thead { position: sticky; top: 0; z-index: 1; background-color: #fff; box-shadow: 0 2px 2px rgba(0,0,0,.1); }
     th, td { border: 1px solid #ccc; padding: 6px; vertical-align: middle; text-align: center; cursor: default; }
-    th { background: #eee; cursor: pointer; }
-    th.sorted-asc::after { content: " ▲"; }
-    th.sorted-desc::after { content: " ▼"; }
     input, select { margin-left: 10px; padding: 5px; }
     button { margin-left: 10px; padding: 5px; }
     .back-home-btn { margin-right: 10px; }
   </style>
-  <!-- PapaParse -->
+  <!-- ПапаПарс -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
@@ -32,7 +29,7 @@
   <label for="searchText" style="margin-left:20px;">Поиск по всем колонкам: </label>
   <input type="text" id="searchText" placeholder="Введите текст...">
 
-  <button onclick="resetFiltersAndSorting()">Сбросить фильтр и сортировку</button>
+  <button onclick="resetFilters()">Сбросить фильтр</button>
 
   <table id="equipTable">
     <thead>
@@ -55,8 +52,7 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRR3bKUFvSQgLei3Zi4
 
 let allData = [];
 // Нужные колонки: B,C,D,E,F,G,H,J
-const neededCols = [1,2,3,4,5,6,7,8]; // После удаления статуса
-let sortConfig = { col: null, dir: 1 }; // Настройки сортировки
+const neededCols = [1,2,3,4,5,6,7,8]; // Колонки с первого листа Google Sheets
 
 Papa.parse(url, {
   download: true,
@@ -98,29 +94,6 @@ function renderTable(typeFilter, searchText) {
            matchSearch;
   });
 
-  // Сортируем таблицу
-  if (sortConfig.col !== null) {
-    filtered.sort((a,b) => {
-      let idx = neededCols[sortConfig.col];
-      let valA = a[idx] ?? "";
-      let valB = b[idx] ?? "";
-
-      // Проверяем, является ли значение числом
-      let isNumA = /^[-+]?(\d*\.)?\d+$/.test(valA);
-      let isNumB = /^[-+]?(\d*\.)?\d+$/.test(valB);
-
-      if (isNumA && isNumB) {
-        // Преобразуем значения в числа
-        let numA = parseFloat(valA.replace(",", ".") || 0);
-        let numB = parseFloat(valB.replace(",", ".") || 0);
-        return (numA - numB) * sortConfig.dir;
-      } else {
-        // Осталось обычное алфавитное сравнение
-        return valA.localeCompare(valB) * sortConfig.dir;
-      }
-    });
-  }
-
   // Отображаем данные
   filtered.forEach(row => {
     const tr = document.createElement("tr");
@@ -131,21 +104,12 @@ function renderTable(typeFilter, searchText) {
     });
     tbody.appendChild(tr);
   });
-
-  // Обновляем иконки сортировки
-  document.querySelectorAll("#equipTable th").forEach((th,i) => {
-    th.classList.remove("sorted-asc","sorted-desc");
-    if (i === sortConfig.col) {
-      th.classList.add(sortConfig.dir === 1 ? "sorted-asc" : "sorted-desc");
-    }
-  });
 }
 
-// Функция сброса фильтров и сортировки
-function resetFiltersAndSorting() {
+// Функция сброса фильтров
+function resetFilters() {
   document.getElementById("typeFilter").value = "Все";
   document.getElementById("searchText").value = "";
-  sortConfig = { col: null, dir: 1 };
   renderTable("Все","");
 }
 
@@ -160,19 +124,6 @@ function applyFilters() {
 // Подписываем события на изменение фильтров
 document.getElementById("typeFilter").addEventListener("change", applyFilters);
 document.getElementById("searchText").addEventListener("input", applyFilters);
-
-// Добавляем событие сортировки по клику на заголовки колонок
-document.querySelectorAll("#equipTable th").forEach((th,i) => {
-  th.addEventListener("click", () => {
-    if (sortConfig.col === i) {
-      sortConfig.dir *= -1; // Меняем направление сортировки
-    } else {
-      sortConfig.col = i; // Устанавливаем новую колонку для сортировки
-      sortConfig.dir = 1; // Начинаем с восходящей сортировки
-    }
-    applyFilters(); // Перезагружаем таблицу с новыми настройками
-  });
-});
 </script>
 </body>
 </html>
