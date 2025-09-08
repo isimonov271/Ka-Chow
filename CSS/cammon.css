@@ -1,5 +1,6 @@
-/* Файл общих стилей common_styles.css */
+/* Файл cammon.css */
 
+/* Общие стили для всех страниц */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -18,9 +19,21 @@ body {
     background-color: transparent; /* Прозрачный фон */
 }
 
-.logo {
-    width: 13%; /* Настройка размера логотипа */
+a.logo-link { /* Новая ссылка для логотипа */
+    display: inline-block; /* Блок с возможностями встраивания */
+    width: 13%; /* Ширина равна ширине самого логотипа */
     height: auto;
+    margin: 0 auto; /* Центрирование по горизонтали */
+}
+
+.logo {
+    width: 100%; /* Логотип занимает всю ширину родительского блока */
+    height: auto;
+    transition: transform 0.3s ease-in-out; /* Добавляем плавный эффект изменения масштаба */
+}
+
+.logo:hover {
+    transform: scale(1.1); /* Эффект увеличения при наведении */
 }
 
 .footer {
@@ -48,10 +61,10 @@ body {
 
 .main-content {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-    gap: 50px;
+    justify-content: center; /* Расположение элементов по центру */
+    align-items: stretch; /* Все кнопки имеют одинаковую высоту */
+    flex-wrap: wrap; /* Возможность переноса строки на мобильных устройствах */
+    gap: 20px; /* Расстояние между кнопками */
     padding: 40px 20px;
 }
 
@@ -64,7 +77,8 @@ body {
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     transition: transform 0.3s;
-    background-color: #ebebeb; /* Новый цвет кнопок */
+    background-color: #ebebeb; /* Цвет фона */
+    height: fit-content; /* Высота зависит от контента */
 }
 
 .menu-item:hover {
@@ -103,7 +117,7 @@ body {
     border-radius: 8px;
     font-size: 25px; /* Увеличенный размер шрифта */
     font-weight: bold; /* Жирный шрифт */
-    cursor: default; /* Курсор остаётся стандартным */
+    cursor: default; /* Стандартный курсор */
     transition: background-color 0.3s;
     margin-top: 5px; /* Отступ сверху уменьшен */
 }
@@ -118,7 +132,7 @@ body {
 
 @media (max-width: 900px) {
     .main-content {
-        flex-direction: column;
+        flex-direction: column; /* На узких экранах переключаемся обратно на столбец */
         gap: 30px;
     }
     .image-container {
