@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #ffffff; 
+            background-color: #ffffff; /* Светлый фон */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -20,7 +20,7 @@
             display: flex;
             align-items: center; /* Вертикальное выравнивание */
             justify-content: center; /* Горизонтальное выравнивание */
-            padding: 15px 30px;
+            padding: 10px 10px;
             background-color: transparent; /* Прозрачный фон */
         }
 
@@ -32,9 +32,10 @@
         }
 
         .logo {
-            width: 100%; /* Логотип занимает всю доступную ширину */
-            height: auto;
-            transition: transform 0.3s ease-in-out; /* Эффект плавного увеличения */
+    display: block; /* Используется блочное отображение */
+    margin: 0 auto; /* Центрирование по горизонтали */
+    width: 100%; /* Ширина равна ширине самого логотипа */
+    height: auto;
         }
 
         .logo:hover {
@@ -43,9 +44,8 @@
 
         .footer {
             text-align: center;
-            padding: 5px;
             background-color: transparent; /* Прозрачный фон */
-            margin-top: auto;
+            margin-top: 44px;
         }
 
         /* Мелкий текст внизу страницы */
