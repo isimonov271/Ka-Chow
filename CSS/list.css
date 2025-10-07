@@ -55,6 +55,13 @@ button {
   cursor: pointer;
 }
 
-.typeFilter { 
+.typeFilter {
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out; /* плавный переход цвета */
+}
+
+.typeFilter:hover {
+  background-color: #eaeffc;
+  border-color: #bddaff; /* подчеркиваем рамку голубым оттенком */
+  color: #333;            /* тёмный шрифт для контраста */
 }
