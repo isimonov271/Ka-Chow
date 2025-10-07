@@ -55,21 +55,6 @@ button {
   cursor: pointer;
 }
 
-  .edit-image {
-      width: 90px;
-      height: 50px;
-      vertical-align: middle;
-      margin-left: 1px;
-      cursor: pointer;
-      opacity: 0.8; /* Полупрозрачность в обычном состоянии */
-      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Переход для обоих эффектов */
-    }
-
- .edit-image:hover {
-      opacity: 1; /* Непрозрачность при наведении */
-      transform: scale(1.1); /* Немного увеличиваем размер */
-      filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); /* Тень при наведении */
-    }
-#typeFilter {
-cursor: pointer;
+.typeFilter { 
+  cursor: pointer;
 }
