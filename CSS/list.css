@@ -71,6 +71,7 @@ button {
       filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); /* Тень при наведении */
     }
 
-#typeFilter {
+.typeFilter {
   cursor: pointer;
+  margin-left:20px;
 }
