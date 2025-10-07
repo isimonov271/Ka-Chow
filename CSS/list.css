@@ -58,7 +58,7 @@ button {
   .edit-image {
       width: 90px;
       height: 50px;
-      vertical-align: -17.1px;
+      vertical-align: middle;
       margin-left: 1px;
       cursor: pointer;
       opacity: 0.8; /* Полупрозрачность в обычном состоянии */
