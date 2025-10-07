@@ -25,14 +25,15 @@
   <table id="equipTable">
     <thead>
       <tr>
-        <th data-col="1">Тип</th>
+       <th data-col="1">Тип</th>
         <th data-col="2">Описание</th>
         <th data-col="3">Стоимость</th>
         <th data-col="4">Кол-во</th>
         <th data-col="5">В работе</th>
-        <th data-col="6">Занято иначе</th>
-        <th data-col="7">Свободно</th>
-        <th data-col="8">Комментарий</th>
+        <th data-col="6">В ремонте</th>
+        <th data-col="7">Перемещено</th>
+        <th data-col="8">Свободно</th>
+        <th data-col="9">Комментарий</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -42,8 +43,8 @@
 const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCW75G3u5LTX8GHqE_cH4X373Oymb87IMJ2fl48SiDPfoOpQ9x25W0PlYlmSs-c__wxDD5hm298e3/pub?output=csv";
 
 let allData = [];
-// Нужные колонки: B,C,D,E,F,G,H,J
-const neededCols = [1,2,3,4,5,6,7,8]; // Колонки с первого листа Google Sheets
+// Нужные колонки: B,C,D,E,F,G,H,I,J
+const neededCols = [1,2,3,4,5,6,7,8,9]; // Колонки с первого листа Google Sheets
 
 Papa.parse(url, {
   download: true,
