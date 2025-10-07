@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Оборудование STP TC</title>
+  <link rel="stylesheet" href="/Ka-Chow/CSS/list.css">
+  <!-- ПапаПарс -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <h2>Оборудование STP TC</h2>
+
+  <button onclick="window.location.href='https://isimonov271.github.io/Ka-Chow/'" class="back-home-btn">На главную</button>
+
+  <label for="typeFilter" style="margin-left:20px;">Тип оборудования: </label>
+  <select id="typeFilter">
+    <option value="Все">Все</option>
+  </select>
+
+  <label for="searchText" style="margin-left:20px;">Поиск по всем колонкам: </label>
+  <input type="text" id="searchText" placeholder="Введите текст...">
+
+  <button onclick="resetFilters()">Сбросить фильтр</button>
+
+  <table id="equipTable">
+    <thead>
+      <tr>
+       <th data-col="1">Тип</th>
+        <th data-col="2">Описание</th>
+        <th data-col="3">Стоимость</th>
+        <th data-col="4">Кол-во</th>
+        <th data-col="5">В работе</th>
+        <th data-col="6">В ремонте</th>
+        <th data-col="7">Перемещено</th>
+        <th data-col="8">Свободно</th>
+        <th data-col="9">Комментарий</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+<script>
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdBGbwuVA7ZftbmCSWcTE_xSgyaALbaZ_VABjPBk3e1pYfJdJ68J_sRcgVnnxZ-DpOyA9fv1e0zwa5/pub?output=csv";
+
+let allData = [];
+// Нужные колонки: B,C,D,E,F,G,H,I,J
+const neededCols = [1,2,3,4,5,6,7,8,9]; // Колонки с первого листа Google Sheets
+
+Papa.parse(url, {
+  download: true,
+  header: false,
+  complete: function(results) {
+    allData = results.data.slice(1); // Пропускаем первую строку с заголовком
+    fillTypeFilter(); // Заполняем выпадающее меню типов оборудования
+    renderTable("Все",""); // Первоначальная загрузка данных
+  }
+});
+
+// Заполнение списка типов оборудования
+function fillTypeFilter() {
+  const typeSet = new Set();
+  allData.forEach(row => {
+    if (row[1]) typeSet.add(row[1].trim()); // Тип оборудования находится в второй колонке (индекс 1)
+  });
+  const select = document.getElementById("typeFilter");
+  typeSet.forEach(type => {
+    const opt = document.createElement("option");
+    opt.value = type;
+    opt.textContent = type;
+    select.appendChild(opt);
+  });
+}
+
+// Рендеринг таблицы
+function renderTable(typeFilter, searchText) {
+  const tbody = document.querySelector("#equipTable tbody");
+  tbody.innerHTML = "";
+  const search = searchText.toLowerCase();
+
+  let filtered = allData.filter(row => {
+    const type   = row[1]?.trim(); // Тип оборудования находится в 2-й колонке (индекс 1)
+    const rowText = neededCols.map(idx => row[idx] ? row[idx].toString().toLowerCase() : "").join(" "); // Поиск по нужным колонкам
+    const matchSearch = search === "" || rowText.includes(search);
+    
+    return (typeFilter === "Все" || type === typeFilter) &&
+           matchSearch;
+  });
+
+  // Отображаем данные
+  filtered.forEach(row => {
+    const tr = document.createElement("tr");
+    neededCols.forEach(idx => {
+      const td = document.createElement("td");
+      td.textContent = row[idx] ?? "";
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+// Функция сброса фильтров
+function resetFilters() {
+  document.getElementById("typeFilter").value = "Все";
+  document.getElementById("searchText").value = "";
+  renderTable("Все","");
+}
+
+// Применение фильтров
+function applyFilters() {
+  renderTable(
+    document.getElementById("typeFilter").value,
+    document.getElementById("searchText").value
+  );
+}
+
+// Подписываем события на изменение фильтров
+document.getElementById("typeFilter").addEventListener("change", applyFilters);
+document.getElementById("searchText").addEventListener("input", applyFilters);
+</script>
+</body>
+</html>
