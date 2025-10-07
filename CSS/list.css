@@ -58,8 +58,8 @@ button {
   .edit-image {
       width: 90px;
       height: 50px;
-      vertical-align: middle;
-      margin-left: 10px;
+      vertical-align: -17.1px;
+      margin-left: 7px;
       cursor: pointer;
       opacity: 0.8; /* Полупрозрачность в обычном состоянии */
       transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Переход для обоих эффектов */
