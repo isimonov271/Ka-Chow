@@ -70,3 +70,6 @@ button {
       transform: scale(1.1); /* Немного увеличиваем размер */
       filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); /* Тень при наведении */
     }
+.typeFilter {
+cursor: pointer;
+}
