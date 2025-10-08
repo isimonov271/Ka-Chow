@@ -57,4 +57,15 @@ button {
 
 .typeFilter {
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out; /* Плавный переход цвета */
+}
+
+/* Изменение цвета фона при наведении */
+.typeFilter:hover {
+  background-color: lightblue; /* Цвет фона при наведении */
+}
+
+/* Если хотите ещё задать цвет фона при клике (focus) */
+.typeFilter:focus {
+  background-color: lightgreen; /* Цвет фона при активном состоянии */
 }
